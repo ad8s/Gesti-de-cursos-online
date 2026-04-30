@@ -2,11 +2,11 @@
 
 namespace App\Models;
 
-// use Illuminate\Contracts\Auth\MustVerifyEmail;
-use Database\Factories\UserFactory;
 use Illuminate\Database\Eloquent\Attributes\Fillable;
 use Illuminate\Database\Eloquent\Attributes\Hidden;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 
@@ -14,14 +14,8 @@ use Illuminate\Notifications\Notifiable;
 #[Hidden(['password', 'remember_token'])]
 class User extends Authenticatable
 {
-    /** @use HasFactory<UserFactory> */
     use HasFactory, Notifiable;
 
-    /**
-     * Get the attributes that should be cast.
-     *
-     * @return array<string, string>
-     */
     protected function casts(): array
     {
         return [
@@ -29,6 +23,21 @@ class User extends Authenticatable
             'is_admin' => 'boolean',
             'password' => 'hashed',
         ];
+    }
+
+    public function createdCategories(): HasMany
+    {
+        return $this->hasMany(Category::class);
+    }
+
+    public function createdCourses(): HasMany
+    {
+        return $this->hasMany(Course::class);
+    }
+
+    public function courses(): BelongsToMany
+    {
+        return $this->belongsToMany(Course::class)->withPivot('enrolled_at')->withTimestamps();
     }
 
     public function isAdmin(): bool
@@ -40,6 +49,10 @@ class User extends Authenticatable
     {
         if ($this->isAdmin()) {
             return true;
+        }
+
+        if ($resource instanceof self) {
+            return $this->is($resource);
         }
 
         $resourceUserId = data_get($resource, 'user_id') ?? data_get($resource, 'owner_id');

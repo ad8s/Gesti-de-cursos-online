@@ -1,16 +1,16 @@
 <x-app-layout>
     <x-slot name="header">
-        <h2 class="text-xl font-semibold leading-tight text-gray-800">{{ __('Create course') }}</h2>
+        <h2 class="text-3xl font-semibold tracking-tight text-white">{{ __('Create course') }}</h2>
     </x-slot>
 
     <div class="py-12">
         <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-            <div class="overflow-hidden rounded-2xl bg-white shadow-sm ring-1 ring-gray-200">
-                <form method="POST" action="{{ route('courses.store') }}" class="space-y-6 p-6">
+            <div class="overflow-hidden rounded-[2rem] border border-white/10 bg-white/5 shadow-2xl shadow-cyan-950/20 backdrop-blur">
+                <form method="POST" action="{{ route('courses.store') }}" class="space-y-6 p-6 sm:p-8">
                     @csrf
                     @include('courses._form', ['categories' => $categories])
                     <div class="flex items-center justify-end gap-3">
-                        <a href="{{ route('courses.index') }}" class="rounded-md border border-gray-300 px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-50">{{ __('Cancel') }}</a>
+                        <a href="{{ route('courses.index') }}" class="rounded-full border border-white/10 px-4 py-2 text-sm font-medium text-slate-200 transition hover:border-cyan-400/50 hover:text-white">{{ __('Cancel') }}</a>
                         <x-primary-button>{{ __('Save') }}</x-primary-button>
                     </div>
                 </form>

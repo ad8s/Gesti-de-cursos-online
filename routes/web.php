@@ -26,12 +26,6 @@ Route::get('/dashboard', function (Request $request) {
 })->middleware(['auth', 'verified'])->name('dashboard');
 
 Route::middleware('auth')->group(function () {
-    Route::get('/courses/create', [CourseController::class, 'create'])->name('courses.create');
-    Route::post('/courses', [CourseController::class, 'store'])->name('courses.store');
-    Route::get('/courses/{course}/edit', [CourseController::class, 'edit'])->whereNumber('course')->name('courses.edit');
-    Route::put('/courses/{course}', [CourseController::class, 'update'])->whereNumber('course')->name('courses.update');
-    Route::delete('/courses/{course}', [CourseController::class, 'destroy'])->whereNumber('course')->name('courses.destroy');
-
     Route::post('/courses/{course}/enroll', [EnrollmentController::class, 'enroll'])->whereNumber('course')->name('courses.enroll');
     Route::delete('/courses/{course}/enroll', [EnrollmentController::class, 'unenroll'])->whereNumber('course')->name('courses.unenroll');
     Route::get('/my-courses', [EnrollmentController::class, 'myCourses'])->name('my-courses');
@@ -39,6 +33,14 @@ Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
+});
+
+Route::middleware(['auth', 'can:is_admin'])->group(function () {
+    Route::get('/courses/create', [CourseController::class, 'create'])->name('courses.create');
+    Route::post('/courses', [CourseController::class, 'store'])->name('courses.store');
+    Route::get('/courses/{course}/edit', [CourseController::class, 'edit'])->whereNumber('course')->name('courses.edit');
+    Route::put('/courses/{course}', [CourseController::class, 'update'])->whereNumber('course')->name('courses.update');
+    Route::delete('/courses/{course}', [CourseController::class, 'destroy'])->whereNumber('course')->name('courses.destroy');
 });
 
 Route::middleware(['auth', 'can:is_admin'])->prefix('admin')->name('admin.')->group(function () {

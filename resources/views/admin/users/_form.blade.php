@@ -13,21 +13,22 @@
         <x-input-error class="mt-2" :messages="$errors->get('email')" />
     </div>
 
-    <div>
+    <div class="lg:col-span-2">
         <x-input-label for="password" :value="__('Password')" />
-        <x-text-input id="password" name="password" type="password" class="mt-1 block w-full" @required(! $user) />
+        <x-text-input id="password" name="password" type="password" class="mt-1 block w-full" @required(! $user) autocomplete="new-password" />
+        <p class="mt-2 text-sm text-slate-400">{{ __('Type the password here, then confirm it below.') }}</p>
         <x-input-error class="mt-2" :messages="$errors->get('password')" />
     </div>
 
-    <div>
+    <div class="lg:col-span-2">
         <x-input-label for="password_confirmation" :value="__('Confirm password')" />
-        <x-text-input id="password_confirmation" name="password_confirmation" type="password" class="mt-1 block w-full" />
+        <x-text-input id="password_confirmation" name="password_confirmation" type="password" class="mt-1 block w-full" autocomplete="new-password" />
     </div>
 
     <div class="lg:col-span-2 flex items-center gap-3">
         <input type="hidden" name="is_admin" value="0">
-        <label class="inline-flex items-center gap-3 text-sm font-medium text-gray-700">
-            <input id="is_admin" name="is_admin" type="checkbox" value="1" class="rounded border-gray-300 text-cyan-600 shadow-sm focus:ring-cyan-500" @checked(old('is_admin', $user?->is_admin ?? false))>
+        <label class="inline-flex items-center gap-3 text-sm font-medium text-slate-200">
+            <input id="is_admin" name="is_admin" type="checkbox" value="1" class="rounded border-white/10 text-cyan-400 shadow-sm focus:ring-cyan-400" @checked(old('is_admin', $user?->is_admin ?? false))>
             {{ __('Admin') }}
         </label>
     </div>
